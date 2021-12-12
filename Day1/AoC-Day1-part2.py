@@ -1,10 +1,6 @@
-from functools import total_ordering
-import sys
-import numpy as np
+from os import path
 
-print(sys.version)
-
-f = open("/Users/petertindale/Source/AoC-python/Day1/list.txt", "r")
+f = open(path.dirname(__file__) + "/list.txt", "r")
 
 depth_list = f.readlines()
 

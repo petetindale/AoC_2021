@@ -1,7 +1,6 @@
-import sys
-print(sys.version)
+from os import path
 
-f = open("/Users/petertindale/Source/AoC-python/Day1/list.txt", "r")
+f = open(path.dirname(__file__) + "/list.txt", "r")
 depth_list = f.readlines()
 
 f.close()

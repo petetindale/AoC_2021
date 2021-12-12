@@ -1,6 +1,7 @@
 from os import path
 from functools import reduce
 
+
 class Vector:
     def __init__(self, movement, amount):
         self.movement = movement
@@ -17,7 +18,7 @@ class Vector:
             return -self.amount
         else :
             return 0
-        
+
 
 f = open(path.dirname(__file__) + "/list.txt", "r")
 
