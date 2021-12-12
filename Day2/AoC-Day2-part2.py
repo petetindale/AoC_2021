@@ -1,7 +1,7 @@
 from os import path
 from functools import reduce
 
-
+#Write the instructions
 class Vector:
     def __init__(self, movement, amount):
         self.movement = movement
@@ -20,24 +20,41 @@ class Vector:
             return 0
 
 
+#Build the sub
+class Submarine:
+    def __init__(self):
+        self.aim = 0
+        self.horizontal = 0
+        self.depth = 0
+    def instruction(self, instruct):
+        self.aim += instruct.vertical()
+        self.horizontal += instruct.horizontal()
+        self.depth += self.aim * instruct.horizontal()
+    def __str__(self) -> str:
+        return "Aim : %i - Forward : %i - Depth : %i - Total : %i" % (self.aim, self.horizontal, self.depth, (self.horizontal*self.depth))
+
+
+#Load file information
 f = open(path.dirname(__file__) + "/list.txt", "r")
-
 move_list = f.readlines()
-
 f.close()
 
-#print(move_list)
+#could probably unit test this...
+#move_list = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
 
-
+#convert strings into more useful formats.
 move_list = list(map(lambda x : Vector(x.split(" ")[0],x.split(" ")[1]), move_list))
 
-horizontal = 0
-vertical = 0
+def move_submarine(sub, instruction):
+    return sub.instruction(instruction)
 
-horizontal = reduce(lambda x, y : x + y.horizontal(), move_list, horizontal)
-vertical = reduce(lambda x, y : x + y.vertical(), move_list, vertical)
+sub = Submarine()
 
-total = horizontal * vertical
+for instruction in move_list:
+    sub.instruction(instruction)
 
-print("Horizontal distance %i * Vertical Distance %i = Total %i " % (horizontal, vertical, total))
+print(sub)
+
+
+
 
