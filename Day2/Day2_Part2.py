@@ -1,6 +1,11 @@
 from os import path
 from functools import reduce
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
 #Write the instructions
 class Vector:
     def __init__(self, movement, amount):
