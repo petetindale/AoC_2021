@@ -30,30 +30,23 @@ class Submarine:
         self.aim += instruct.vertical()
         self.horizontal += instruct.horizontal()
         self.depth += self.aim * instruct.horizontal()
+        return self
     def __str__(self) -> str:
         return "Aim : %i - Forward : %i - Depth : %i - Total : %i" % (self.aim, self.horizontal, self.depth, (self.horizontal*self.depth))
 
 
 #Load file information
 f = open(path.dirname(__file__) + "/list.txt", "r")
-move_list = f.readlines()
+list_of_strings = f.readlines()
 f.close()
 
 #could probably unit test this...
-#move_list = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
+#list_of_strings = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
 
 #convert strings into more useful formats.
-move_list = list(map(lambda x : Vector(x.split(" ")[0],x.split(" ")[1]), move_list))
+list_of_instructions = list(map(lambda x : Vector(x.split(" ")[0],x.split(" ")[1]), list_of_strings))
 
-def move_submarine(sub, instruction):
-    return sub.instruction(instruction)
-
-sub = Submarine()
-
-for instruction in move_list:
-    sub.instruction(instruction)
-
-print(sub)
+print(reduce(lambda sub, instr : sub.instruction(instr), list_of_instructions, Submarine()))
 
 
 
