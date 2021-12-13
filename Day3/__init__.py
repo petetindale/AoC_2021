@@ -1,1 +1,0 @@
-from .Day3_Part1 import get_binary_diagnostic
