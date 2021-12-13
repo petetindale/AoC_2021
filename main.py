@@ -27,6 +27,7 @@ if CurrentDay == "Day 3" or CurrentDay == "All" :
     list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "binaries_day3.txt")
 
     #Day 3 Part 1
-    print(sb.get_binary_diagnostic(list_of_strings))
+    print(f"binary diagnostics {sb.get_binary_diagnostic(list_of_strings)}")
     #Day 3 Part 2
+    print(f"oxy * co2 = {sb.get_oxy_co2_diagnostic(list_of_strings)}")
 
