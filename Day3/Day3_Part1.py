@@ -1,7 +1,7 @@
 def get_binary_diagnostic(list_of_strings):
     list_of_binaries = list(map(lambda x : list(map(int, x.strip())), list_of_strings))
-
-    #length_of_binary = list_of_binaries[0].
+    number_of_binary_words = len(list_of_binaries)
+    length_of_binary_word = len(list_of_binaries[0])
 
     print(list_of_binaries)
     return 0
