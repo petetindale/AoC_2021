@@ -1,10 +1,26 @@
+from functools import reduce
+
 def get_binary_diagnostic(list_of_strings):
     list_of_binaries = list(map(lambda x : list(map(int, x.strip())), list_of_strings))
     number_of_binary_words = len(list_of_binaries)
     length_of_binary_word = len(list_of_binaries[0])
 
-    print(list_of_binaries)
-    return 0
+    sum_binary_words = reduce(lambda binary_word, binary_sum : list(map(lambda x,y : x + y, binary_word, binary_sum)), list_of_binaries, [0] * length_of_binary_word)
+
+    gamma_binary_list = list(map(lambda x : 1 if x > number_of_binary_words/2 else 0, sum_binary_words))
+    epsilon_binary_list = list(map(lambda x : 0 if x > number_of_binary_words/2 else 1, sum_binary_words))
+
+    print(gamma_binary_list)
+    print(epsilon_binary_list)
+
+    gamma_binary = int(''.join(map(str, gamma_binary_list)),2)
+    epsilon_binary = int(''.join(map(str, epsilon_binary_list)),2)
+
+    print(sum_binary_words)
+    print(gamma_binary)
+    print(epsilon_binary)
+
+    return gamma_binary * epsilon_binary
 
 
 #test
