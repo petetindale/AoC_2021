@@ -5,3 +5,4 @@ from .instruction_parse import move_with_instructions
 from .measure_movement import measure_depth
 from .measure_movement import measure_threes_depth
 from .squid_bingo import play_squid_bingo
+from .hydrothermal_vents import find_overlapping_vents

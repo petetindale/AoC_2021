@@ -105,4 +105,4 @@ def play_squid_bingo(list_of_strings, win_game) :
 def test_squid_bingo() :
     print(play_squid_bingo(test_input, False))
 
-test_squid_bingo()
+#test_squid_bingo()
