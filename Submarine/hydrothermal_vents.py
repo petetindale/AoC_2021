@@ -1,5 +1,8 @@
 
 
+from typing import Coroutine
+
+
 test_list_of_strings = ["0,9 -> 5,9\n",
    "8,0 -> 0,8\n",
    "9,4 -> 3,4\n",
@@ -16,15 +19,33 @@ test_overalps = 5
 
 
 class Coordinate :
-    def __init__(self, x:int, y:int) -> None:
+    def __init__(self) -> None:
+        self.x = 0
+        self.y = 0
+    
+    def __eq__(self, __o: object) -> bool:
+        return self.x == __o.x and self.y == __o.y
+
+    def __ne__(self, __o: object) -> bool:
+        return not(self.x == __o.x and self.y == __o.y)
+
+    def from_xy(self, x:int, y:int):
         self.x = x
         self.y = y
-    
-    @classmethod
-    def from_string(cls, coordinate_string):
+        return self
+
+    def from_string(self, coordinate_string):
         list_of_xy = list(map(int, coordinate_string.split(",")))
-        return cls(list_of_xy[0],list_of_xy[1])
+        self.x = list_of_xy[0]
+        self.y = list_of_xy[1]
+        return self
     
+def simple_line(pos1:Coordinate, pos2:Coordinate) -> list:
+    list_of_coords = list()
+    list_of_coords.append(pos1)
+    if pos1 != pos2 :
+        list_of_coords.append(pos2)
+    return list_of_coords
 
 def bresenham_line_generator(pos1, pos2) :
     x1, y1, x2, y2 = pos1.x, pos1.y, pos2.x, pos2.y
@@ -44,7 +65,7 @@ def bresenham_line_generator(pos1, pos2) :
     p = 2 * dy - dx
 
     list_of_coords = list()
-    list_of_coords.append(Coordinate(x,y))
+    list_of_coords.append(Coordinate().from_xy(x,y))
     
     for k in range(dx):
         if p > 0 :
@@ -55,22 +76,25 @@ def bresenham_line_generator(pos1, pos2) :
 
         x = x + 1 if x < x2 else x - 1
 
-        list_of_coords.append(Coordinate(x,y))
+        list_of_coords.append(Coordinate().from_xy(x,y))
 
     return list_of_coords
 
 
 class Vent_Mapping :
     def __init__(self, direction_string) -> None:
-        list_of_cordinates = list(map(lambda x : Coordinate.from_string(x), direction_string.strip().split(" -> ")))
-        self.first = self.list_of_cordinates[0]
-        self.last = self.list_of_cordinates[1]
+        list_of_coordinates = list(map(lambda x : Coordinate().from_string(x), direction_string.strip().split(" -> ")))
+        self.first = list_of_coordinates[0]
+        self.last = list_of_coordinates[1]
         pass
-    def is_horizontal_or_vertical(self) :
+    def is_horizontal_or_vertical(self) -> bool:
         return (self.first.x == self.last.x or self.first.y == self.last.y)
-    def get_list_of_coordinates_between_points(self) :
-        bresenham_line_generator(self.first, self.last)
-        pass
+    def get_list_of_coordinates_between_points(self) -> list:
+        list_of_coordinates = list()
+        if self.is_horizontal_or_vertical() :
+            list_of_coordinates.append(simple_line(self.first, self.last))
+        return list_of_coordinates
+
         
 
     
