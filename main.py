@@ -2,7 +2,7 @@ from Common import file_importer
 import Submarine as sb
 from os import path
 
-CurrentDay = "Day 5"
+CurrentDay = "Day 6"
 
 if CurrentDay == "Day 1" or CurrentDay == "All" : 
     #Day 1
@@ -47,4 +47,10 @@ if CurrentDay == "Day 5" or CurrentDay == "All" :
     #Day 5 Part 1
     print(f"Overlapping Vents {sb.find_overlapping_vents(list_of_strings, False, 1000)}")
 
+if CurrentDay == "Day 6" or CurrentDay == "All" : 
+    #Day 6
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "lanterfish_observations_day6.txt")
+
+    #Day 6 Part 1
+    print(f"Population of lanterfish {sb.lanternfish_population_counter(list_of_strings, 80)}")
 

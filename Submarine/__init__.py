@@ -6,3 +6,4 @@ from .measure_movement import measure_depth
 from .measure_movement import measure_threes_depth
 from .squid_bingo import play_squid_bingo
 from .hydrothermal_vents import find_overlapping_vents
+from .lanternfish_population_counter import lanternfish_population_counter

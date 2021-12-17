@@ -23,6 +23,6 @@ def lanternfish_population_counter(list_of_strings:list, days:int) -> int :
     return len(list_of_lanternfish)
 
 def test_lanternfish_population_counter() -> None :
-    print(f"There are {lanternfish_population_counter(test_list_of_strings, 80)} lanternfish")
+    print(f"There are {lanternfish_population_counter(test_list_of_strings, 256)} lanternfish")
 
 test_lanternfish_population_counter()
