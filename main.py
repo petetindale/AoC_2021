@@ -52,5 +52,5 @@ if CurrentDay == "Day 6" or CurrentDay == "All" :
     list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "lanterfish_observations_day6.txt")
 
     #Day 6 Part 1
-    print(f"Population of lanterfish {sb.lanternfish_population_counter(list_of_strings, 80)}")
+    print(f"Population of lanterfish {sb.lanternfish_population_counter(list_of_strings, 256)}")
 
