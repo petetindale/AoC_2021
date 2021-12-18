@@ -16,9 +16,21 @@ class SignalPatterns :
     def __init__(self, string:str) -> None:
         self.unique_signal_patterns = list(map(lambda x : x.strip(), string.split(" | ")[0].split(" ")))
         self.output_signal_patterns = list(map(lambda x : x.strip(), string.split(" | ")[1].split(" ")))
+        self.unique_signal_patterns_binary = list(map(lambda string : self.convert_string_to_bit_position(string), self.unique_signal_patterns))
         pass
     def count_1_4_7_8_in_output(self) -> int :
         return int(fn.reduce(lambda count, string: count + (1 if (len(string) in (2,3,4,7)) else 0), self.output_signal_patterns, 0))
+    def convert_string_to_bit_position(self, string_signal:str) -> int :
+        binary_rep = int('00000000', 2)
+        for char in list(string_signal):
+            if char == 'a' :   binary_rep = binary_rep | int('00000001',2)
+            elif char == 'b' : binary_rep = binary_rep | int('00000010',2)
+            elif char == 'c' : binary_rep = binary_rep | int('00000100',2)
+            elif char == 'd' : binary_rep = binary_rep | int('00001000',2)
+            elif char == 'e' : binary_rep = binary_rep | int('00010000',2)
+            elif char == 'f' : binary_rep = binary_rep | int('00100000',2)
+            elif char == 'g' : binary_rep = binary_rep | int('01000000',2)
+        return binary_rep
 
 
 def find_signal_digits(list_of_strings:list) -> int :
@@ -29,4 +41,4 @@ def find_signal_digits(list_of_strings:list) -> int :
 def test_find_signal_digits() -> None :
     print(f"There are {find_signal_digits(test_list_of_strings)} 1, 4, 7, 8")
 
-#test_find_signal_digits()
+test_find_signal_digits()
