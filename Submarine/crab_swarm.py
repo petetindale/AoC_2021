@@ -19,17 +19,15 @@ def calculate_minimal_crab_moves(list_of_strings:list) -> int :
     median_postiion = int(sts.median(list_of_crabs))
     mean_position = sts.mean(list_of_crabs)
 
+    #Crude search function.... linear incremental... but start somewhere sensible.. the median
     prev_fuelconsumed = 0
     current_position = median_postiion
     current_fuelconsumed = calculate_fuel_consumed_weighted(list_of_crabs, current_position)
     prev_fuelconsumed = calculate_fuel_consumed_weighted(list_of_crabs, current_position-1)
+    #Which way to go?
     direction = -1 if prev_fuelconsumed < current_fuelconsumed else 1
 
-    print(f"460 - {calculate_fuel_consumed_weighted(list_of_crabs, 460)}")
-    print(f"464 - {calculate_fuel_consumed_weighted(list_of_crabs, 464)}")
-    print(f"468 - {calculate_fuel_consumed_weighted(list_of_crabs, 468)}")
-
-
+    #Dont do this at home kids... forever loops....not pretty
     while True :
         current_position += direction
         current_fuelconsumed = calculate_fuel_consumed_weighted(list_of_crabs, current_position)

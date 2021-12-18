@@ -8,3 +8,4 @@ from .squid_bingo import play_squid_bingo
 from .hydrothermal_vents import find_overlapping_vents
 from .lanternfish_population_counter import lanternfish_population_counter
 from .crab_swarm import calculate_minimal_crab_moves
+from .signal_displays import find_signal_digits

@@ -2,7 +2,7 @@ from Common import file_importer
 import Submarine as sb
 from os import path
 
-CurrentDay = "Day 7"
+CurrentDay = "Day 8"
 
 if CurrentDay == "Day 1" or CurrentDay == "All" : 
     #Day 1
@@ -60,3 +60,10 @@ if CurrentDay == "Day 7" or CurrentDay == "All" :
 
     #Day 6 Part 1
     print(f"Crab fuel used {sb.calculate_minimal_crab_moves(list_of_strings)}")
+
+if CurrentDay == "Day 8" or CurrentDay == "All" : 
+    #Day 8
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "signals_day8.txt")
+
+    #Day 8 Part 1
+    print(f"Found unique patterns in output {sb.find_signal_digits(list_of_strings)}")
