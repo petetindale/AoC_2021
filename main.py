@@ -66,4 +66,7 @@ if CurrentDay == "Day 8" or CurrentDay == "All" :
     list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "signals_day8.txt")
 
     #Day 8 Part 1
-    print(f"Found unique patterns in output {sb.find_signal_digits(list_of_strings)}")
+    #print(f"Found unique patterns in output {sb.find_signal_digits(list_of_strings)}")
+
+    #Day 8 Part 2
+    print(f"Sum of output {sb.sum_signal_output(list_of_strings)}")
