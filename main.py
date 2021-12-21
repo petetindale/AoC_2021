@@ -2,7 +2,7 @@ from Common import file_importer
 import Submarine as sb
 from os import path
 
-CurrentDay = "Day 8"
+CurrentDay = "Day 9"
 
 if CurrentDay == "Day 1" or CurrentDay == "All" : 
     #Day 1
@@ -70,3 +70,13 @@ if CurrentDay == "Day 8" or CurrentDay == "All" :
 
     #Day 8 Part 2
     print(f"Sum of output {sb.sum_signal_output(list_of_strings)}")
+
+if CurrentDay == "Day 9" or CurrentDay == "All" : 
+    #Day 9
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "smoke_basin_day9.txt")
+
+    #Day 9 Part 1
+    print(f"Sum of Risk Level = {sb.find_low_points(list_of_strings)}")
+
+    #Day 9 Part 2
+    #print(f"Sum of output {sb.sum_signal_output(list_of_strings)}")
