@@ -39,7 +39,7 @@ def find_largest_basins(list_of_strings:list) -> int :
     contour_map = np.zeros_like(depth_map,np.short)
 
 
-    low_points = list()
+    basin_count = list()
     for y in range(depth_map.shape[0]) :
         for x in range(depth_map.shape[1]) :
             if y > 0 : top = depth_map[y-1, x] 
@@ -58,11 +58,9 @@ def find_largest_basins(list_of_strings:list) -> int :
                 and depth_map[y , x] < bottom \
                 and depth_map[y , x] < left \
                 and depth_map[y , x] < right :
-                low_points.append(depth_map[y , x])
+                basin_count.append(depth_map[y , x])
 
-    print(len(low_points))
-    print(depth_map.shape)
-    return sum(list(map(lambda lp : lp+1, low_points)))
+    return sum(list(map(lambda lp : lp+1, basin_count)))
 
 def test_find_low_points() -> None :
     print(f"Sum of Risk Level = {find_low_points(test_list_of_strings)}")
