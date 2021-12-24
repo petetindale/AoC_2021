@@ -11,3 +11,4 @@ from .crab_swarm import calculate_minimal_crab_moves
 from .signal_displays import find_signal_digits
 from .signal_displays import sum_signal_output
 from .smoke_basin import find_low_points
+from .smoke_basin import find_largest_basins

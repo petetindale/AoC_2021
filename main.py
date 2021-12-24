@@ -79,4 +79,5 @@ if CurrentDay == "Day 9" or CurrentDay == "All" :
     print(f"Sum of Risk Level = {sb.find_low_points(list_of_strings)}")
 
     #Day 9 Part 2
+    print(f"Product of 3 largest basins = {sb.find_largest_basins(list_of_strings)}")
     #print(f"Sum of output {sb.sum_signal_output(list_of_strings)}")
