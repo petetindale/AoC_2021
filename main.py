@@ -2,7 +2,7 @@ from Common import file_importer
 import Submarine as sb
 from os import path
 
-CurrentDay = "Day 9"
+CurrentDay = "Day 10"
 
 if CurrentDay == "Day 1" or CurrentDay == "All" : 
     #Day 1
@@ -80,4 +80,16 @@ if CurrentDay == "Day 9" or CurrentDay == "All" :
 
     #Day 9 Part 2
     print(f"Product of 3 largest basins = {sb.find_largest_basins(list_of_strings)}")
+    #print(f"Sum of output {sb.sum_signal_output(list_of_strings)}")
+    
+
+if CurrentDay == "Day 10" or CurrentDay == "All" : 
+		#Day 10
+		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "syntax_day10.txt")
+
+		#Day 9 Part 1
+		print(f"Corrupted line score = {sb.find_corrupted_lines(list_of_strings)}")
+
+    #Day 9 Part 2
+    #print(f"Product of 3 largest basins = {sb.find_largest_basins(list_of_strings)}")
     #print(f"Sum of output {sb.sum_signal_output(list_of_strings)}")
