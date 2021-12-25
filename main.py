@@ -91,5 +91,5 @@ if CurrentDay == "Day 10" or CurrentDay == "All" :
 		print(f"Corrupted line score = {sb.find_corrupted_lines(list_of_strings)}")
 
     #Day 9 Part 2
-    #print(f"Product of 3 largest basins = {sb.find_largest_basins(list_of_strings)}")
+		print(f"Complete lines score = {sb.complete_lines(list_of_strings)}")
     #print(f"Sum of output {sb.sum_signal_output(list_of_strings)}")
