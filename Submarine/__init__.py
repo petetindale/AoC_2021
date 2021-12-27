@@ -14,3 +14,4 @@ from .smoke_basin import find_low_points
 from .smoke_basin import find_largest_basins
 from .syntax_scoring import find_corrupted_lines
 from .syntax_scoring import complete_lines
+from .dumbo_octopus import count_flashes
