@@ -16,3 +16,5 @@ from .syntax_scoring import find_corrupted_lines
 from .syntax_scoring import complete_lines
 from .dumbo_octopus import count_flashes
 from .cave_system import count_small_cave_paths
+from .origami import count_fold_points
+from .origami import see_code
