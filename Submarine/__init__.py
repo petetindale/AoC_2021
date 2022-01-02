@@ -18,3 +18,4 @@ from .dumbo_octopus import count_flashes
 from .cave_system import count_small_cave_paths
 from .origami import count_fold_points
 from .origami import see_code
+from .polymers import polymer_diff_max_min
