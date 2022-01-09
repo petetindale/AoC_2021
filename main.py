@@ -2,7 +2,7 @@ from Common import file_importer
 import Submarine as sb
 from os import path
 
-CurrentDay = "Day 13"
+CurrentDay = "Day 14"
 
 if CurrentDay == "Day 1" or CurrentDay == "All" : 
     #Day 1
@@ -119,4 +119,13 @@ if CurrentDay == "Day 13" or CurrentDay == "All" :
 		#print(f"Number of points after 1 fold = {sb.count_fold_points(list_of_strings, True)}")
 		
 		sb.see_code(list_of_strings)
+
+if CurrentDay == "Day 14" or CurrentDay == "All" : 
+		#Day 14
+		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "polymers_day14.txt")
+
+		#Day 13 Part 1
+		print(f"Difference max & min of polymer chars = {sb.polymer_diff_max_min(list_of_strings, 10)}")
+		
+		#sb.see_code(list_of_strings)
 		
