@@ -54,7 +54,6 @@ def polymer_get_roots(root, depth, instr, cmpr_dict):
 				right = poly_ins+root[1]
 				cmpr_dict[root].append([[left,0],[right,0]])
 		#cmpr_dict[root][i+1] = cmpr_dict[root]
-	
 
 def build_next_polymer(polymer:str, instr:dict) -> str :
 	polymer_new = ''
@@ -68,9 +67,23 @@ def count_uniques(polymer:str) -> dict :
 	cnt_plymr = dict()
 	for char in set_plymr :
 		cnt_plymr[char] = polymer.count(char)
-		print(f"char - {char} : {cnt_plymr[char]}")
+		#print(f"char - {char} : {cnt_plymr[char]}")
 	return cnt_plymr
-		
+	
+def build_10_depth_dict(instr:dict) -> dict :
+	lookup = dict()
+	for root in instr :
+		polymer = root
+		for i in range(10) : 
+			polymer = build_next_polymer(polymer, instr)
+		lookup[root] = polymer 	
+	return lookup
+
+def double_down(instr:dict, lookup10:dict, cnt10:dict) -> dict :
+	for root in instr:
+		tmp = lookup10[root]
+		for i in range(len(tmp)-1) :
+			deep = tmp[i]+tmp[i+1]
 
 def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
 	polymer = list_of_strings.pop(0).strip()
@@ -80,7 +93,13 @@ def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
 		splt = string.split(" -> ")
 		instr[splt[0]] = splt[1].strip()
 		
-	polymer_compressed(polymer,instr)
+	#polymer_compressed(polymer,instr)
+	lookup10 = build_10_depth_dict(instr)
+	cnt_10s = dict()
+	for root in lookup10 :
+		cnt_10s[root]= count_uniques(lookup10[root])
+	
+
 	
 	for i in range(itr):
 		polymer = build_next_polymer(polymer, instr)
@@ -94,5 +113,5 @@ def test_polymer_diff_max_min():
 	print(f"Diff of polymer max & min = {polymer_diff_max_min(test_list_of_strings, i)} : after {i} times")
 	print("1: 7, 2: 13, 3:25, 4:49, 5:97, 10:3073")
 	
-#test_polymer_diff_max_min()
+test_polymer_diff_max_min()
 
