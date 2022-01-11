@@ -81,22 +81,29 @@ def build_10_depth_dict(instr:dict) -> dict :
 			polymer = build_next_polymer(polymer, instr)
 		lookup[root] = polymer 	
 	return lookup
+	
+def count_from_counts(polymer:str, counts:dict,inc_last:bool=False)->dict:
+	tmp = polymer
+	new_count = dict()
+	for i in range(len(tmp)-1) :
+		deep = tmp[i]+tmp[i+1]
+
+		for char in counts[deep] :
+			if char not in new_count :
+				new_count[char] = 0
+			new_count[char] += counts[deep][char]
+			if i != len(tmp)-1 and char == tmp[i+1] :
+				new_count[char] -= 1
+		if inc_last : 
+			new_count[tmp[i]] += 0
+	if inc_last :
+		new_count[tmp[-1]]+=1
+	return new_count
 
 def double_down(instr:dict, lookup10:dict, cnt10:dict) -> dict :
 	count20 = dict()
 	for root in instr:
-		tmp = lookup10[root]
-		count20[root] = dict()
-		for i in range(len(tmp)-1) :
-			deep = tmp[i]+tmp[i+1]
-
-			for char in cnt10[deep] :
-				if char not in count20[root] :
-					count20[root][char] = 0
-				count20[root][char] += cnt10[deep][char]
-				if i != len(tmp)-1 and char == tmp[i+1] :
-					count20[root][char] -= 1
-
+		count20[root]= count_from_counts(lookup10[root],cnt10)
 	return count20
 
 def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
@@ -114,14 +121,7 @@ def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
 		cnt_10s[root]= count_uniques(lookup10[root])
 	count20 = double_down(instr, lookup10, cnt_10s)
 	
-	print(cnt_10s['NN'])
-	print(cnt_10s['NC'])
-	print(cnt_10s['CB'])
-
-	print(count20['NN'])
-	print(count20['NC'])
-	print(count20['CB'])
-	#print(count20['NN'])
+	print(count_from_counts('NNCB',count20, True))
 
 
 	#NNCB
