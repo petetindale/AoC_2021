@@ -24,7 +24,7 @@ test_list_of_strings = [
 #After step 3: NBBBCNCCNBBNBNBBCHBHHBCHB (25)
 #After step 4: NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB (49)
 #After step 5: (97)
-#After step 10: (1749)
+#After step 10: (1588)
 
 
 
@@ -73,11 +73,11 @@ def count_uniques(polymer:str) -> dict :
 		#print(f"char - {char} : {cnt_plymr[char]}")
 	return cnt_plymr
 	
-def build_10_depth_dict(instr:dict) -> dict :
+def build_depth_dict(instr:dict, depth:int) -> dict :
 	lookup = dict()
 	for root in instr :
 		polymer = root
-		for i in range(10) : 
+		for i in range(depth) : 
 			polymer = build_next_polymer(polymer, instr)
 		lookup[root] = polymer 	
 	return lookup
@@ -94,17 +94,18 @@ def count_from_counts(polymer:str, counts:dict,inc_last:bool=False)->dict:
 			new_count[char] += counts[deep][char]
 			if i != len(tmp)-1 and char == tmp[i+1] :
 				new_count[char] -= 1
-		if inc_last : 
-			new_count[tmp[i]] += 0
+		if inc_last and i != 0: 
+			new_count[tmp[i]] += 1
 	if inc_last :
-		new_count[tmp[-1]]+=1
+		new_count[tmp[-1]]+=2
+
 	return new_count
 
-def double_down(instr:dict, lookup10:dict, cnt10:dict) -> dict :
-	count20 = dict()
+def double_down(instr:dict, lookup:dict, counts:dict) -> dict :
+	countdouble = dict()
 	for root in instr:
-		count20[root]= count_from_counts(lookup10[root],cnt10)
-	return count20
+		countdouble[root]= count_from_counts(lookup[root],counts)
+	return countdouble
 
 def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
 	polymer = list_of_strings.pop(0).strip()
@@ -113,15 +114,17 @@ def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
 	for string in list_of_strings :
 		splt = string.split(" -> ")
 		instr[splt[0]] = splt[1].strip()
+	
+	#this really isn't the cleverest or cleanest way of doing this. but it got there
 		
 	#polymer_compressed(polymer,instr)
-	lookup10 = build_10_depth_dict(instr)
-	cnt_10s = dict()
-	for root in lookup10 :
-		cnt_10s[root]= count_uniques(lookup10[root])
-	count20 = double_down(instr, lookup10, cnt_10s)
+	lookup = build_depth_dict(instr,15)
+	counts = dict()
+	for root in lookup :
+		counts[root]= count_uniques(lookup[root])
+	countdouble = double_down(instr, lookup, counts)
 	
-	print(count_from_counts('NNCB',count20, True))
+	print(count_from_counts(polymer,countdouble, True))
 
 
 	#NNCB
@@ -133,13 +136,14 @@ def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
 	for i in range(itr):
 		polymer = build_next_polymer(polymer, instr)
 	
-	cnt_chars = count_uniques(polymer)
+	cnt_chars = count_from_counts(polymer,countdouble,True)
+	print(count_uniques(polymer))
 	print(cnt_chars)
 	
 	return max(cnt_chars.values())-min(cnt_chars.values())
 	
 def test_polymer_diff_max_min():
-	i = 20
+	i = 10
 	print(f"Diff of polymer max & min = {polymer_diff_max_min(test_list_of_strings, i)} : after {i} times")
 	print("1: 7, 2: 13, 3:25, 4:49, 5:97, 10:3073")
 	
