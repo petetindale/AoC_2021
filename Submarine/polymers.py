@@ -26,6 +26,9 @@ test_list_of_strings = [
 #After step 5: (97)
 #After step 10: (1749)
 
+
+
+
 def list_from_polymer(polymer:str) -> list :
 	poly_len = len(polymer)
 	poly_list = list()
@@ -80,10 +83,21 @@ def build_10_depth_dict(instr:dict) -> dict :
 	return lookup
 
 def double_down(instr:dict, lookup10:dict, cnt10:dict) -> dict :
+	count20 = dict()
 	for root in instr:
 		tmp = lookup10[root]
+		count20[root] = dict()
 		for i in range(len(tmp)-1) :
 			deep = tmp[i]+tmp[i+1]
+
+			for char in cnt10[deep] :
+				if char not in count20[root] :
+					count20[root][char] = 0
+				count20[root][char] += cnt10[deep][char]
+				if i != len(tmp)-1 and char == tmp[i+1] :
+					count20[root][char] -= 1
+
+	return count20
 
 def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
 	polymer = list_of_strings.pop(0).strip()
@@ -98,18 +112,34 @@ def polymer_diff_max_min(list_of_strings:list, itr:int) -> int :
 	cnt_10s = dict()
 	for root in lookup10 :
 		cnt_10s[root]= count_uniques(lookup10[root])
+	count20 = double_down(instr, lookup10, cnt_10s)
 	
+	print(cnt_10s['NN'])
+	print(cnt_10s['NC'])
+	print(cnt_10s['CB'])
+
+	print(count20['NN'])
+	print(count20['NC'])
+	print(count20['CB'])
+	#print(count20['NN'])
+
+
+	#NNCB
+
+	#Dont forget to add the very last character from the polymer to the counts... 
+
 
 	
 	for i in range(itr):
 		polymer = build_next_polymer(polymer, instr)
 	
 	cnt_chars = count_uniques(polymer)
+	print(cnt_chars)
 	
 	return max(cnt_chars.values())-min(cnt_chars.values())
 	
 def test_polymer_diff_max_min():
-	i = 3
+	i = 20
 	print(f"Diff of polymer max & min = {polymer_diff_max_min(test_list_of_strings, i)} : after {i} times")
 	print("1: 7, 2: 13, 3:25, 4:49, 5:97, 10:3073")
 	

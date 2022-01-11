@@ -125,7 +125,7 @@ if CurrentDay == "Day 14" or CurrentDay == "All" :
 		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "polymers_day14.txt")
 
 		#Day 13 Part 1
-		print(f"Difference max & min of polymer chars = {sb.polymer_diff_max_min(list_of_strings, 10)}")
+		print(f"Difference max & min of polymer chars = {sb.polymer_diff_max_min(list_of_strings, 20)}")
 		
 		#sb.see_code(list_of_strings)
 		
