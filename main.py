@@ -2,7 +2,9 @@ from Common import file_importer
 import Submarine as sb
 from os import path
 
+
 CurrentDay = "Day 15"
+
 
 if CurrentDay == "Day 1" or CurrentDay == "All" : 
     #Day 1
