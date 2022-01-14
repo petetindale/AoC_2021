@@ -19,6 +19,10 @@ def decode_hex_to_bin(hexstr:str)->bin:
 
 BinPacket = tuple[int,int] #packet, length
 
+def remove_head(pack:BinPacket,offset:int)->BinPacket:
+	bn, bn_ln = pack
+	return ((bn & ~((len^2 - 1)<<bn_ln - offset)), bn_ln - offset)
+
 class Packet:
 	def __init__(self, packet:str='')->None:
 		if packet != '' :
@@ -56,6 +60,7 @@ class Packet:
 	def return_excess(self)->BinPacket:
 		if self.type() == 4:
 			value, value_len = self.value()
+			
 			
 		else:
 			return (0,0)
