@@ -1,4 +1,4 @@
-
+from typing import Tuple
 
 test_list_of_strings = [
 	"D2FE28\n"
@@ -17,12 +17,16 @@ def decode_hex(hexstr:str)->int:
 def decode_hex_to_bin(hexstr:str)->bin:
 	return bin(decode_hex(hexstr))
 
-BinPacket = tuple[int,int] #packet, length
+BinPacket = Tuple[int,int] #packet, length
 
-def remove_head(pack:BinPacket,offset:int)->BinPacket:
+def reduce_offset(pack:BinPacket, offset:int)->BinPacket:
 	bn, bn_ln = pack
-	return ((bn & ~((len^2 - 1)<<bn_ln - offset)), bn_ln - offset)
-
+	mask = (2**offset)-1
+	bn_red = bn & ~(mask << (bn_ln - offset))
+	bn_ln_red = bn_ln - offset
+	return bn_red, bn_ln_red
+	
+	
 class Packet:
 	def __init__(self, packet:str='')->None:
 		if packet != '' :
@@ -42,7 +46,8 @@ class Packet:
 		return (self.int_pk >> self.bit_len-6) & 7
 
 	def payload_pack(self)->BinPacket:
-		return ((self.int_pk & ~(63<<self.bit_len-6)), self.bit_len - 6)
+		return reduce_offset(self.pack, 6)
+		#return ((self.int_pk & ~(63<<self.bit_len-6)), self.bit_len - 6)
 	
 	def value(self)->BinPacket:
 		if self.type() == 4:
@@ -53,15 +58,13 @@ class Packet:
 			while not end :
 				value = (value << 4) | ((pld >> pld_len-5)&15)
 				end = (pld >> pld_len-1 != 1)
-				pld = pld & ~(31<<pld_len-5)
-				pld_len -= 5
+				pld, pld_len = reduce_offset((pld, pld_len), 5)
 			return (value, original_len-pld_len)
 
 	def return_excess(self)->BinPacket:
 		if self.type() == 4:
 			value, value_len = self.value()
-			
-			
+				
 		else:
 			return (0,0)
 
@@ -71,14 +74,12 @@ class Packet:
 			pld, pld_len = self.payload_pack()
 
 			if pld >> pld_len-1 == 0 : # Length Type with 15 bits
-				length = (pld >> pld_len-16)&((2^15)-1)
-				pkts = pld >> 16
-				pkts_len = pld_len - 16
+				length = (pld >> pld_len-16)&((2**15)-1)
+				pkts, pkts_len = reduce_offset((pld,pld_len),16)
 
 			else : #Number of Packets	
-				number = (pld >> pld_len-12)&((2^11)-1)
-				pkts = pld >> 12
-				pkts_len = pld_len - 12
+				number = (pld >> pld_len-12)&((2**11)-1)
+				pkts, pkts_len = reduce_offset((pld,pld_len),12)
 
 
 
