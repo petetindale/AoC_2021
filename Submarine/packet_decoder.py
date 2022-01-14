@@ -17,9 +17,9 @@ def decode_hex(hexstr:str)->int:
 def decode_hex_to_bin(hexstr:str)->bin:
 	return bin(decode_hex(hexstr))
 
-BinPacket = Tuple[int,int] #packet, length
+binPack = Tuple[int,int] #packet, length
 
-def reduce_offset(pack:BinPacket, offset:int)->BinPacket:
+def reduce_offset(pack:binPack, offset:int)->binPack:
 	bn, bn_ln = pack
 	mask = (2**offset)-1
 	bn_red = bn & ~(mask << (bn_ln - offset))
@@ -28,28 +28,33 @@ def reduce_offset(pack:BinPacket, offset:int)->BinPacket:
 	
 	
 class Packet:
-	def __init__(self, packet:str='')->None:
+	def __init__(self, packet:str='', pack:binPack = (-1, -1))->None:
 		if packet != '' :
 			self.hexstr:str = packet
-			self.int_pk:int = decode_hex(self.hexstr)
-			self.bin_pk:bin = bin(self.int_pk)
-			self.bit_len = len(self.hexstr)*4
-			self.pack:BinPacket = (self.int_pk, self.bit_len)
-		
+			self.pack:binPack = (decode_hex(self.hexstr), len(self.hexstr)*4)
+			self.bin_pk:bin = bin(self.pack[0])
+			
+		elif pack != (-1,-1):
+			self.pack = pack
+			self.bin_pk = bin(self.pack[0])
+			self.hexstr = f'{self.pack[0]:X}'
+
 	
 	def version(self)->int:
 		#Get 3 MSBs
-		return self.int_pk >> (self.bit_len-3)
+		pk, pk_ln = self.pack
+		return pk >> (pk_ln-3)
 	
 	def type(self)->int:
 		#Get MSB 4-6
-		return (self.int_pk >> self.bit_len-6) & 7
+		pk, pk_ln = self.pack
+		return (pk >> pk_ln - 6) & 7
 
-	def payload_pack(self)->BinPacket:
+	def payload_pack(self)->binPack:
 		return reduce_offset(self.pack, 6)
 		#return ((self.int_pk & ~(63<<self.bit_len-6)), self.bit_len - 6)
 	
-	def value(self)->BinPacket:
+	def value(self)->binPack:
 		if self.type() == 4:
 			pld, pld_len = self.payload_pack()
 			original_len = pld_len
@@ -61,10 +66,10 @@ class Packet:
 				pld, pld_len = reduce_offset((pld, pld_len), 5)
 			return (value, original_len-pld_len)
 
-	def return_excess(self)->BinPacket:
+	def return_excess(self)->binPack:
 		if self.type() == 4:
 			value, value_len = self.value()
-				
+			return reduce_offset(self.pack, 6 + value_len)	
 		else:
 			return (0,0)
 
@@ -92,14 +97,6 @@ class Packet:
 			f"Type : {self.type()}\n" + \
 			f"Hex Pld : {self.value()}\n" + \
 			"~~~~~~~~~~~~~"
-
-class PacketFromStream(Packet):
-	def __init__(self, packets: int, packets_length: int) -> None:
-		self.bit_len = packets_length
-		self.int_pk = packets
-		self.bin_pk = bin(packets)
-		self.hexstr = f'{self.int_pk:X}'
-	
 
 
 
