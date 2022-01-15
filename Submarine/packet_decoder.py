@@ -77,6 +77,7 @@ class Packet:
 	def subpackets(self)->list:
 		if self.type() != 4 :
 			pld, pld_len = self.payload_pack()
+			packets=list()
 
 			if pld >> pld_len-1 == 0 : # Length Type with 15 bits
 				length = (pld >> pld_len-16)&((2**15)-1)
@@ -84,7 +85,13 @@ class Packet:
 
 			else : #Number of Packets	
 				number = (pld >> pld_len-12)&((2**11)-1)
-				pkts, pkts_len = reduce_offset((pld,pld_len),12)
+				packs = reduce_offset((pld,pld_len),12)
+				for i in range(number):
+					p = Packet(packs)
+					packets.append(p)
+					packs = p.return_excess()
+			
+				
 
 
 
