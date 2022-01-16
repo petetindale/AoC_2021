@@ -1,4 +1,5 @@
 from typing import Tuple
+from functools import reduce
 
 test_list_of_strings = [
 	"D2FE28\n"
@@ -111,6 +112,7 @@ class Packet:
 			return (packets,subpackets_length)
 		return (list(), 0)
 
+	
 	def get_output(self)->str:
 		if self.type() == 4 :
 			return f"V[{self.version()},{self.type()}]({self.value()[0]})"
@@ -120,6 +122,29 @@ class Packet:
 				output += f"|{packs.get_output()}|"
 			output += ':'
 			return output
+	
+	def calculate(self)->int:
+		if self.type()==0:
+			return int(reduce(lambda calc, pk: calc + pk.calculate(), self.subpackets()[0], 0 ))
+		elif self.type()==1:
+			return int(reduce(lambda calc, pk: calc * pk.calculate(), self.subpackets()[0], 0 ))
+		elif self.type()==2:
+			return int(reduce(lambda calc, pk: min(calc, pk.calculate()), self.subpackets()[0], 0 ))
+		elif self.type()==3:
+			return int(reduce(lambda calc, pk: max(calc, pk.calculate()), self.subpackets()[0], 0 ))
+		elif self.type()==4:
+			return self.value()[0]
+		elif self.type()==5:
+			pks = self.subpackets()[0]
+			return 1 if pks[0].calculate()==pks[1].calculate() else 0
+		elif self.type()==6:
+			pks = self.subpackets()[0]
+			return 1 if pks[0].calculate()>pks[1].calculate() else 0
+		elif self.type()==7:
+			pks = self.subpackets()[0]
+			return 1 if pks[0].calculate()<pks[1].calculate() else 0
+		return 0
+			
 
 	def sum_versions(self)->int:
 		if self.type() == 4 :
@@ -136,7 +161,7 @@ class Packet:
 			f"Binary : {self.bin_pk[0:10]}...\n"+ \
 			f"Version : {self.version()}\n" + \
 			f"Type : {self.type()}\n" + \
-			f"Output : {self.get_output()}\n" + \
+			f"Output : {self.calculate()}\n" + \
 			f"Version Sum : {self.sum_versions()}\n" +\
 			"~~~~~~~~~~~~~"
 
