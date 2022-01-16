@@ -125,9 +125,9 @@ class Packet:
 		if self.type() == 4 :
 			return self.version()
 		else :
-			output = 0
+			output = self.version()
 			for packs in self.subpackets()[0] :
-				output += packs.version()
+				output += packs.sum_versions()
 			return output
 
 	def __str__(self) -> str:
