@@ -120,6 +120,7 @@ def getmaxheight(list_of_strings:list)->int:
 	shoot = Deploy(list_of_targets[0])
 	shoot.shoot((7,4))
 	shoot.shoot((6,3))
+	shoot.shoot((5,3))
 	shoot.draw()
 	print('%%%%%%%%%%%%%%%%%%%%%%%%%')
 	return 0
@@ -132,6 +133,7 @@ test_getmaxheight()
 
 
 '''
+
 A bit of maths for me.
 
 y = [Distance to Target:min,max] + Vy * time - 1/2 t^2 
@@ -139,11 +141,12 @@ dy/dt = Vy - t
 
 x = [Distance to Target:min,max] + Vx * time - 1/2 t^2 (where the last two zero out rather than go negative)
 dx/dt = Vx - t (therefore forward motion stops when Vx = t i.e. dx/dt=0)
+As the target must be hit in a step.. not partially. Vx must be less than Distance to Target(min,max) i.e. hit directly first go.. 
+and Vx must be greater than Vx = d/t Max distance travelled by X is Vx(Vx+1)/2. Therefore Vx = 
 
 x and y speeds are independent. X either makes it or doesnt. 
-Max distance travelled by X is 
 
-In order to find the max height, you can calculate the time at which x can be reached. 
 
+In order to find the max height, you can calculate the time at which x can be reached.
 
 '''
