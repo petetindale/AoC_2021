@@ -1,7 +1,7 @@
 from typing import Tuple
 test_list_of_strings = [
 	"target area: x=20..30, y=-10..-5\n"
-	#,"target area: x=139..187, y=-148..-89"
+	,"target area: x=139..187, y=-148..-89"
 	]
 
 loc = Tuple[int,int] 
@@ -55,15 +55,18 @@ class TargetArea:
 		return False
 		
 class Deploy:
-	def __init__(self, target:TargetArea, velocities:loc)->None:
-		self.velxy = velocities
+	def __init__(self, target:TargetArea)->None:
 		self.target = target
+		self.reset()
+	
+	def reset(self, soft:bool=False)->None:
 		self.time = 0
 		self.pos:loc = (0,0)
-		self.trajectory = [self.pos]
-		self.max = (0,0)
-		self.min = (0,0)
-	
+		if not soft:
+			self.trajectory = [self.pos]
+			self.max = (0,0)
+			self.min = (0,0)		
+
 	def step(self)->None:
 		self.time += 1
 		x,y = self.pos
@@ -79,7 +82,9 @@ class Deploy:
 		self.velxy = (velx,vely)
 		self.trajectory.append(self.pos)
 	
-	def shoot(self)->None:
+	def shoot(self, velocities:loc, soft:bool=True)->None:
+		self.reset(soft)
+		self.velxy = velocities
 		while not self.target.hit(self.pos) and not self.target.missed(self.pos):
 			self.step()
 		if self.target.hit(self.pos):
@@ -91,10 +96,8 @@ class Deploy:
 		minx,miny = minloc(self.min, self.target.bl)
 		maxx,maxy = maxloc(self.max,self.target.bl)
 		
-		
 		minx,miny = minloc((minx,miny), self.target.tr)
 		maxx,maxy = maxloc((maxx,maxy),self.target.tr)
-		print(miny)
 		
 		for i in range(maxy-miny+2):
 			y = maxy-i
@@ -114,8 +117,9 @@ class Deploy:
 def getmaxheight(list_of_strings:list)->int:
 	print('%%%%%%%%%%%%%%%%%%%%%%%%%')
 	list_of_targets = list(map(lambda x:TargetArea(x.strip()),list_of_strings))
-	shoot = Deploy(list_of_targets[0],(6,9))
-	shoot.shoot()
+	shoot = Deploy(list_of_targets[0])
+	shoot.shoot((7,4))
+	shoot.shoot((6,3))
 	shoot.draw()
 	print('%%%%%%%%%%%%%%%%%%%%%%%%%')
 	return 0
@@ -125,3 +129,21 @@ def test_getmaxheight():
 
 test_getmaxheight()
 	
+
+
+'''
+A bit of maths for me.
+
+y = [Distance to Target:min,max] + Vy * time - 1/2 t^2 
+dy/dt = Vy - t
+
+x = [Distance to Target:min,max] + Vx * time - 1/2 t^2 (where the last two zero out rather than go negative)
+dx/dt = Vx - t (therefore forward motion stops when Vx = t i.e. dx/dt=0)
+
+x and y speeds are independent. X either makes it or doesnt. 
+Max distance travelled by X is 
+
+In order to find the max height, you can calculate the time at which x can be reached. 
+
+
+'''
