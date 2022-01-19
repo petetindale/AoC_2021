@@ -82,15 +82,15 @@ class Deploy:
 		self.velxy = (velx,vely)
 		self.trajectory.append(self.pos)
 	
-	def shoot(self, velocities:loc, soft:bool=True)->None:
+	def shoot(self, velocities:loc, soft:bool=True)->bool:
 		self.reset(soft)
 		self.velxy = velocities
 		while not self.target.hit(self.pos) and not self.target.missed(self.pos):
 			self.step()
 		if self.target.hit(self.pos):
-			print(f'hit - max y = {self.max[1]}')
+			return True
 		else:
-			print('miss')
+			return False
 	
 	def draw(self)->None:
 		minx,miny = minloc(self.min, self.target.bl)
@@ -113,15 +113,56 @@ class Deploy:
 				else :
 					line += '.'
 			print(line)	
+		
+	def getminvx(self)->int:
+		#finds the minimum value of Vx 
+		#maxvx == right hand side of target area
+		for i in range(self.target.tr[0]):
+			maxdist = i*(i+1)/2 
+			if self.target.hit((maxdist,self.target.tr[1])):
+				return i
+		return 0
+	
+			
+
+def getshotcombinations(dep:Deploy)->int:
+	
+	#Moon shot
+	minx = dep.getminvx()
+	maxy = abs(dep.target.bl[1])-1
+		
+	#In a oner 
+	maxx = dep.target.tr[0]
+	miny = dep.target.bl[1]
+
+	combos = list()
+
+	for i in range(maxy-miny+2):
+		y = maxy-i
+		for j in range(maxx-minx+2):
+			x=j+minx
+			if dep.shoot((x,y)):
+				combos.append((x,y))
+	
+	set(combos)
+	print(len(combos))
+
+	return 0
 	
 def getmaxheight(list_of_strings:list)->int:
 	print('%%%%%%%%%%%%%%%%%%%%%%%%%')
 	list_of_targets = list(map(lambda x:TargetArea(x.strip()),list_of_strings))
 	shoot = Deploy(list_of_targets[0])
-	shoot.shoot((7,4))
-	shoot.shoot((6,3))
-	shoot.shoot((5,3))
-	shoot.draw()
+	shoot.shoot((6,9)) 
+	#shoot.draw()
+
+	getshotcombinations(shoot)
+
+	shoot2 = Deploy(list_of_targets[1])
+	shoot2.shoot((17,148)) #OK I played around and got the right answer...
+
+	getshotcombinations(shoot2)
+
 	print('%%%%%%%%%%%%%%%%%%%%%%%%%')
 	return 0
 	
@@ -142,11 +183,16 @@ dy/dt = Vy - t
 x = [Distance to Target:min,max] + Vx * time - 1/2 t^2 (where the last two zero out rather than go negative)
 dx/dt = Vx - t (therefore forward motion stops when Vx = t i.e. dx/dt=0)
 As the target must be hit in a step.. not partially. Vx must be less than Distance to Target(min,max) i.e. hit directly first go.. 
-and Vx must be greater than Vx = d/t Max distance travelled by X is Vx(Vx+1)/2. Therefore Vx = 
+and Vx must be greater than Vx = d/t Max distance travelled by X is Vx(Vx+1)/2. Therefore MinVx = ahhh it can be brute forced relatively simply... too tired for this.
 
 x and y speeds are independent. X either makes it or doesnt. 
 
+From X you can determine the rough bounds for t.
 
-In order to find the max height, you can calculate the time at which x can be reached.
+So then to get to the highest y.. because the target != 0 and the target must be hit with a full integer, that means that you cant do a moon shot with infinite velocity... 
+so.. you can assume that given height is important you probably wont shoot downwards and the drone will always hit the 0 line first.. when it does it will be travelling at vy+1
+
+
+
 
 '''
