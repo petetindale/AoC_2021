@@ -42,6 +42,15 @@ class SFPair:
 		rdepth = self.right.checkdepthrule(depth)
 		return max(ldepth,rdepth)
 		
+    def isvalue(self)->bool:
+        return self.value != -1 
+
+    def haschildren(self)->bool:
+        if self.isvalue() :
+            return False
+        elif self.left.isvalue() and self.right.isvalue() :
+            return False
+        return True
 
 	def __str__(self)->str:
 		if self.value != -1:
@@ -62,13 +71,13 @@ def pair_fromstr(pairstr:str, parent:SFPair=None)->SFPair:
 			else :
 				lpair = matchedbrackets(pairstr[1:-1])
 				middle = len(lpair)+2
-				pair.left:SFPair = pair_fromstr(lpair,pair)
+				pair.left = pair_fromstr(lpair,pair)
 			if pairstr[-2].isnumeric() :
 				start = pairstr.rfind(',')+1
 				pair.right = pair_fromstr(pairstr[start:-1],pair)
 			else :
 				rpair = matchedbrackets(pairstr[middle:-1])
-				pair.right:SFPair = pair_fromstr(rpair,pair)
+				pair.right = pair_fromstr(rpair,pair)
 		return pair
 
 def final_sum_magnitude(list_of_strings:list)->int:
