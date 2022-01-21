@@ -1,4 +1,4 @@
-from multiprocessing import parent_process
+#from multiprocessing import parent_process
 
 
 test_list_of_strings = [
@@ -34,15 +34,18 @@ class Pair:
 		self.parent:Pair = parent
 		pass
 	
-	def checkdepthrule(self,depth:int=0)->int:
-		if self.isvalue():
+	def applydepthrule(self,depth:int=1)->bool:
+		if not self.isvalue():
 			if depth > 4:
-				print('explode')
-			return depth
-		depth += 1
-		ldepth = self.left.checkdepthrule(depth)
-		rdepth = self.right.checkdepthrule(depth)
-		return max(ldepth,rdepth)
+				if self.haschildren():
+					print('error')
+				print(f'explode {self} at {depth}')
+				return True
+			depth += 1
+			if not self.left.applydepthrule(depth):
+				return self.right.applydepthrule(depth)
+			return True
+		return False
 
 	def applyvaluerule(self)->bool:
 		if self.isvalue():
@@ -57,8 +60,13 @@ class Pair:
 
 				self.left.value = i
 				self.right.value = i + r
+				return True
+			return False
 		else :
-			return self.left.applyvaluerule() or self.right.applyvaluerule()
+			if not self.left.applyvaluerule():
+				 return self.right.applyvaluerule()
+			else:
+				return True
 			
 		
 	def isvalue(self)->bool:
@@ -117,10 +125,19 @@ class Pair:
 def final_sum_magnitude(list_of_strings:list)->int:
 	list_of_pairs = list(map(lambda x:Pair.pair_fromstr(x.strip()),list_of_strings))
 	for p in list_of_pairs:
+		print('================')
+		
 		print(p)
-		p = Pair.add_pair(p, Pair.pair_fromstr('[1,11]'))
+		p.applydepthrule()
 		p.applyvaluerule()
+		
+		p = Pair.add_pair(p, Pair.pair_fromstr('[2,1]'))
+		
 		print(p)
+		p.applydepthrule()
+		p.applyvaluerule()
+		
+		
 	return 0
 
 def test_final_sum_magnitude()->None:
