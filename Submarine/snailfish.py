@@ -34,18 +34,26 @@ class Pair:
 		self.parent:Pair = parent
 		pass
 	
-	def applydepthrule(self,depth:int=1)->bool:
+	def checkdepthrule(self,depth:int=1)->(bool,'Pair'):
 		if not self.isvalue():
 			if depth > 4:
 				if self.haschildren():
 					print('error')
 				print(f'explode {self} at {depth}')
-				return True
+				return (True,self)
 			depth += 1
-			if not self.left.applydepthrule(depth):
-				return self.right.applydepthrule(depth)
-			return True
-		return False
+			leftfound, left = self.left.checkdepthrule(depth)
+			if not leftfound :
+				return self.right.checkdepthrule(depth)
+			return (True, left)
+		return (False,None)
+	
+	def applydepthrule(self)->bool:
+		found, pair = self.checkdepthrule()
+		if found :
+			print(pair)
+		return found
+	
 
 	def applyvaluerule(self)->bool:
 		if self.isvalue():
@@ -79,9 +87,12 @@ class Pair:
 			return False
 		return True
 
-	def findleftvalue(self)->'Pair':
-		return self.parent.left
-    
+	def findleftvalueof(self, match:'Pair', left:'Pair'=None)->'Pair':
+		if self == match :
+			return left
+		return left
+
+
 	def __str__(self)->str:
 		if self.isvalue():
 			return f'{self.value}'
