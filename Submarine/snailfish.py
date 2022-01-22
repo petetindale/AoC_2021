@@ -58,6 +58,13 @@ class Pair:
 			return (True, left)
 		return (False,None)
 
+	def applyrules(self)->None:
+		rules = True
+		while rules:
+			depth = self.applydepthrule()
+			value = self.applyvaluerule()
+			rules = depth or value
+
 	def applyvaluerule(self)->bool:
 		if self.isvalue():
 			if self.value > 9:
@@ -81,18 +88,35 @@ class Pair:
 
 	def applydepthrule(self)->bool:
 		found, pair = self.checkdepthrule()
-		if found :
+		if found and not pair.haschildren():
 				lvalue = None
 				rvalue = None
 				lfound,lpair = pair.parent.findleftvalueof(pair)
+				rfound,rpair = pair.parent.findrightvalueof(pair)
+				
+				if pair.parent.left == pair:
+					side = 'left'
+				else:
+					side = 'right'
+
 				if lfound:
 					lvalue = lpair.getvaluepair('right')
-				rfound,rpair = pair.parent.findrightvalueof(pair)
+					lvalue.value += pair.left.value
+					
 				if rfound:
 					rvalue = rpair.getvaluepair('left')
-				print(f'Left - {lfound} & {lpair} [{lvalue}]')
-				print(f'Right - {rfound} & {rpair} [{rvalue}]')
+					rvalue.value += pair.right.value
+				
+				zero = Pair(pair.parent)
+				zero.value = 0
+
+				if side == 'left':
+					pair.parent.left = zero
+				else:
+					pair.parent.right = zero
+
 		return found	
+
 
 	def findleftvalueof(self, prev:'Pair')->Tuple[bool,'Pair']:
 		if prev == self.left:
@@ -169,14 +193,14 @@ def final_sum_magnitude(list_of_strings:list)->int:
 		print('================')
 		
 		print(p)
-		p.applydepthrule()
-		p.applyvaluerule()
+		p.applyrules()
+		print(p)
 		
 		p = Pair.add_pair(p, Pair.pair_fromstr('[[[[2,1],1],2],3]'))
 		
 		print(p)
-		p.applydepthrule()
-		p.applyvaluerule()
+		p.applyrules()
+		print(p)
 		
 		
 	return 0
