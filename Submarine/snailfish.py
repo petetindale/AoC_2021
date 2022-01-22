@@ -51,7 +51,9 @@ class Pair:
 	def applydepthrule(self)->bool:
 		found, pair = self.checkdepthrule()
 		if found :
-			print(pair)
+				lfound,lpair = pair.parent.findleftvalueof2(pair,pair)
+				print(lfound)
+				print(lpair)
 		return found
 	
 
@@ -87,10 +89,16 @@ class Pair:
 			return False
 		return True
 
-	def findleftvalueof(self, match:'Pair', left:'Pair'=None)->'Pair':
-		if self == match :
-			return left
-		return left
+	def findleftvalueof2(self, match:'Pair', prev:'Pair'=None)->(bool,'Pair'):
+		if prev == self.left:
+			if self.parent == None:
+				return (False, None)
+			else:
+				return self.parent.findleftvalueof2(match,self)
+		else:
+			return (True,self.left)
+		return (False, None)
+
 
 
 	def __str__(self)->str:
@@ -142,7 +150,7 @@ def final_sum_magnitude(list_of_strings:list)->int:
 		p.applydepthrule()
 		p.applyvaluerule()
 		
-		p = Pair.add_pair(p, Pair.pair_fromstr('[2,1]'))
+		p = Pair.add_pair(p, Pair.pair_fromstr('[[[[2,1],1],2],3]'))
 		
 		print(p)
 		p.applydepthrule()
