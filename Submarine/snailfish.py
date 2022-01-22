@@ -1,5 +1,5 @@
 #from multiprocessing import parent_process
-
+from typing import Tuple
 
 test_list_of_strings = [
 	"[1,2]\n"
@@ -33,8 +33,18 @@ class Pair:
 		self.right:Pair = None
 		self.parent:Pair = parent
 		pass
-	
-	def checkdepthrule(self,depth:int=1)->(bool,'Pair'):
+		
+	def isvalue(self)->bool:
+		return self.value != -1 
+
+	def haschildren(self)->bool:
+		if self.isvalue() :
+			return False
+		elif self.left.isvalue() and self.right.isvalue() :
+			return False
+		return True
+
+	def checkdepthrule(self,depth:int=1)->Tuple[bool,'Pair']:
 		if not self.isvalue():
 			if depth > 4:
 				if self.haschildren():
@@ -47,15 +57,6 @@ class Pair:
 				return self.right.checkdepthrule(depth)
 			return (True, left)
 		return (False,None)
-	
-	def applydepthrule(self)->bool:
-		found, pair = self.checkdepthrule()
-		if found :
-				lfound,lpair = pair.parent.findleftvalueof2(pair,pair)
-				print(lfound)
-				print(lpair)
-		return found
-	
 
 	def applyvaluerule(self)->bool:
 		if self.isvalue():
@@ -74,31 +75,52 @@ class Pair:
 			return False
 		else :
 			if not self.left.applyvaluerule():
-				 return self.right.applyvaluerule()
+				return self.right.applyvaluerule()
 			else:
 				return True
-			
-		
-	def isvalue(self)->bool:
-		return self.value != -1 
 
-	def haschildren(self)->bool:
-		if self.isvalue() :
-			return False
-		elif self.left.isvalue() and self.right.isvalue() :
-			return False
-		return True
+	def applydepthrule(self)->bool:
+		found, pair = self.checkdepthrule()
+		if found :
+				lvalue = None
+				rvalue = None
+				lfound,lpair = pair.parent.findleftvalueof(pair)
+				if lfound:
+					lvalue = lpair.getvaluepair('right')
+				rfound,rpair = pair.parent.findrightvalueof(pair)
+				if rfound:
+					rvalue = rpair.getvaluepair('left')
+				print(f'Left - {lfound} & {lpair} [{lvalue}]')
+				print(f'Right - {rfound} & {rpair} [{rvalue}]')
+		return found	
 
-	def findleftvalueof2(self, match:'Pair', prev:'Pair'=None)->(bool,'Pair'):
+	def findleftvalueof(self, prev:'Pair')->Tuple[bool,'Pair']:
 		if prev == self.left:
 			if self.parent == None:
 				return (False, None)
 			else:
-				return self.parent.findleftvalueof2(match,self)
+				return self.parent.findleftvalueof(self)
 		else:
 			return (True,self.left)
-		return (False, None)
-
+	
+	def findrightvalueof(self, prev:'Pair')->Tuple[bool,'Pair']:
+		if prev == self.right:
+			if self.parent == None:
+				return (False, None)
+			else:
+				return self.parent.findrightvalueof(self)
+		else:
+			return (True,self.right)
+	
+	def getvaluepair(self, dir:str)->'Pair':
+		if self.isvalue():
+			return self
+		elif dir == 'left':
+			return self.left.getvaluepair('left')
+		elif dir == 'right':
+			return self.right.getvaluepair('right')
+		else:
+			return None
 
 
 	def __str__(self)->str:
