@@ -118,4 +118,4 @@ def test_find_route() :
 	print(f"Test result {find_route(test_list_of_strings, True)}")
 	print("Expected - 40 or 315 for expanded")
 
-test_find_route()
+# test_find_route()

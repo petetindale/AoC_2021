@@ -1,3 +1,4 @@
+from re import L
 from Common import file_importer
 import Submarine as sb
 from os import path
@@ -86,56 +87,57 @@ if CurrentDay == "Day 9" or CurrentDay == "All" :
     
 
 if CurrentDay == "Day 10" or CurrentDay == "All" : 
-		#Day 10
-		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "syntax_day10.txt")
+    #Day 10
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "syntax_day10.txt")
 
-		#Day 9 Part 1
-		print(f"Corrupted line score = {sb.find_corrupted_lines(list_of_strings)}")
+    #Day 9 Part 1
+    print(f"Corrupted line score = {sb.find_corrupted_lines(list_of_strings)}")
 
     #Day 9 Part 2
-		print(f"Complete lines score = {sb.complete_lines(list_of_strings)}")
+    print(f"Complete lines score = {sb.complete_lines(list_of_strings)}")
     #print(f"Sum of output {sb.sum_signal_output(list_of_strings)}")
     
 if CurrentDay == "Day 11" or CurrentDay == "All" : 
-		#Day 10
-		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "dumbo_octo_day11.txt")
+    #Day 10
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "dumbo_octo_day11.txt")
 
-		#Day 9 Part 1
-		print(f"Octopus flashes = {sb.count_flashes(list_of_strings, 500)}")
+    #Day 9 Part 1
+    print(f"Octopus flashes = {sb.count_flashes(list_of_strings, 500)}")
 
     #Day 9 Part 2
-		#print(f"Complete lines score = {sb.complete_lines(list_of_strings)}")
+    #print(f"Complete lines score = {sb.complete_lines(list_of_strings)}")
    
 if CurrentDay == "Day 12" or CurrentDay == "All" : 
-		#Day 10
-		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "cave_system_day12.txt")
+    #Day 10
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "cave_system_day12.txt")
 
-		#Day 9 Part 1
-		print(f"Number of small csve paths = {sb.count_small_cave_paths(list_of_strings)}")
+    #Day 9 Part 1
+    print(f"Number of small csve paths = {sb.count_small_cave_paths(list_of_strings)}")
 
 if CurrentDay == "Day 13" or CurrentDay == "All" : 
-		#Day 13
-		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "origami_day13.txt")
+    #Day 13
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "origami_day13.txt")
 
-		#Day 13 Part 1
-		#print(f"Number of points after 1 fold = {sb.count_fold_points(list_of_strings, True)}")
-		
-		sb.see_code(list_of_strings)
+    #Day 13 Part 1
+    #print(f"Number of points after 1 fold = {sb.count_fold_points(list_of_strings, True)}")
+
+    sb.see_code(list_of_strings)
 
 if CurrentDay == "Day 14" or CurrentDay == "All" : 
-		#Day 14
-		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "polymers_day14.txt")
+    #Day 14
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "polymers_day14.txt")
 
-		#Day 14 Part 1
-		print(f"Difference max & min of polymer chars = {sb.polymer_diff_max_min(list_of_strings, 10)}")
-		
-		#sb.see_code(list_of_strings)
+    #Day 14 Part 1
+    print(f"Difference max & min of polymer chars = {sb.polymer_diff_max_min(list_of_strings, 10)}")
+
+    #sb.see_code(list_of_strings)
 		
 if CurrentDay == "Day 15" or CurrentDay == "All" : 
-		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "route_day15.txt")
-		print(f"Cost of shortest path = {sb.find_route(list_of_strings, True)}")
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "route_day15.txt")
+    print(f"Cost of shortest path = {sb.find_route(list_of_strings, True)}")
 
 if CurrentDay == "Day 18" or CurrentDay == "All" : 
-		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "snailfishsums_day18.txt")
-		print(f"Magnitude sum = {sb.final_sum_magnitude(list_of_strings)}")
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "snailfishsums_day18.txt")
+    #print(f"Magnitude sum = {sb.final_sum_magnitude(list_of_strings)}")
+    print(f'Max magnitude = {sb.find_max_magnitude(list_of_strings)}')
 		

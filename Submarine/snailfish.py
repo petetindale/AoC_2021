@@ -1,4 +1,5 @@
 #from multiprocessing import parent_process
+from copy import copy, deepcopy
 import functools
 from typing import Tuple
 
@@ -193,8 +194,8 @@ class Pair:
 		if left == None:
 			return right
 		pair = Pair()
-		pair.left = left
-		pair.right = right
+		pair.left = deepcopy(left)
+		pair.right = deepcopy(right)
 
 		pair.left.parent = pair
 		pair.right.parent = pair
@@ -225,6 +226,21 @@ class Pair:
 					pair.right = Pair.pair_fromstr(rpair,pair)
 			return pair
 
+
+def find_max_magnitude(list_of_strings:list)->int:
+	list_of_pairs = list(map(lambda x:Pair.pair_fromstr(x.strip()),list_of_strings))
+
+	max_magnitude = 0
+
+	for leftpair in list_of_pairs:
+		for rightpair in list_of_pairs:
+			if leftpair != rightpair:
+				max_magnitude = max(Pair.add_pair(leftpair,rightpair).applyrules().getmagnitude(), max_magnitude)
+
+	return max_magnitude
+
+
+
 def final_sum_magnitude(list_of_strings:list)->int:
 	list_of_pairs = list(map(lambda x:Pair.pair_fromstr(x.strip()),list_of_strings))
 	print('======================')
@@ -239,4 +255,9 @@ def test_final_sum_magnitude()->None:
 	print(f'TEST - Final Sum Magnitude = {final_sum_magnitude(test_homework_list_of_strings)}')
 	print('ASSERT - FSM = 4140')
 
+def test_find_max_magnitude()->None:
+	print(f'TEST - Find Max Sum = {find_max_magnitude(test_homework_list_of_strings)}')
+	print('ASSERT - FMM = 3993')
+
+#test_find_max_magnitude()
 #test_final_sum_magnitude()

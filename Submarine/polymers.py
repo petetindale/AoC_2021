@@ -147,5 +147,5 @@ def test_polymer_diff_max_min():
 	print(f"Diff of polymer max & min = {polymer_diff_max_min(test_list_of_strings, i)} : after {i} times")
 	print("1: 7, 2: 13, 3:25, 4:49, 5:97, 10:3073")
 	
-test_polymer_diff_max_min()
+#test_polymer_diff_max_min()
 

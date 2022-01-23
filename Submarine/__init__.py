@@ -22,4 +22,5 @@ from .origami import see_code
 from .route_mapping import find_route
 from .polymers import polymer_diff_max_min
 from .snailfish import final_sum_magnitude
+from .snailfish import find_max_magnitude
 
