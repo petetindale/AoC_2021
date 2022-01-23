@@ -1,4 +1,5 @@
 #from multiprocessing import parent_process
+import functools
 from typing import Tuple
 
 test_list_of_strings = [
@@ -11,6 +12,32 @@ test_list_of_strings = [
 	,"[[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]]\n"
 	,"[[[[[9,8],1],2],3],4]\n"
 	,"[[1,2],[[3,4],5]]\n"
+]
+
+test_expanded_list_of_strings = [
+	"[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]\n"
+	,"[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]\n"
+	,"[[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]\n"
+	,"[[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]\n"
+	,"[7,[5,[[3,8],[1,4]]]]\n"
+	,"[[2,[2,2]],[8,[8,1]]]\n"
+	,"[2,9]\n"
+	,"[1,[[[9,3],9],[[9,0],[0,7]]]]\n"
+	,"[[[5,[7,4]],7],1]\n"
+	,"[[[[4,2],2],6],[8,7]]\n"
+]
+
+test_homework_list_of_strings = [
+	"[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]\n"
+	,"[[[5,[2,8]],4],[5,[[9,9],0]]]\n"
+	,"[6,[[[6,2],[5,6]],[[7,6],[4,7]]]]\n"
+	,"[[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]\n"
+	,"[[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]\n"
+	,"[[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]\n"
+	,"[[[[5,4],[7,7]],8],[[8,3],8]]\n"
+	,"[[9,3],[[9,9],[6,[4,9]]]]\n"
+	,"[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]\n"
+	,"[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]\n"
 ]
 
 def matchedbrackets(brackets:str)->str:
@@ -64,7 +91,7 @@ class Pair:
 			return (True, left)
 		return (False,None)
 
-	def applyrules(self)->None:
+	def applyrules(self)->'Pair':
 		rules = True
 		while rules:
 			depth = self.applydepthrule()
@@ -72,6 +99,7 @@ class Pair:
 			if not depth:
 				value = self.applyvaluerule()
 			rules = depth or value
+		return self
 
 	def applyvaluerule(self)->bool:
 		if self.isvalue():
@@ -162,6 +190,8 @@ class Pair:
 
 	@classmethod
 	def add_pair(cls, left:'Pair', right:'Pair')->'Pair':
+		if left == None:
+			return right
 		pair = Pair()
 		pair.left = left
 		pair.right = right
@@ -197,15 +227,16 @@ class Pair:
 
 def final_sum_magnitude(list_of_strings:list)->int:
 	list_of_pairs = list(map(lambda x:Pair.pair_fromstr(x.strip()),list_of_strings))
-	for p in list_of_pairs:
-		p.applyrules()
-		print(p)
-		print(p.getmagnitude())
-		
-	return 0
+	print('======================')
+	for p in list_of_pairs: print(p)
+	x = functools.reduce(lambda sum, pair: Pair.add_pair(sum, pair).applyrules(), list_of_pairs)
+	print('----------------------')
+	print(x)
+	print('======================')
+	return x.getmagnitude()
 
 def test_final_sum_magnitude()->None:
-	print(f'TEST - Final Sum Magnitude = {final_sum_magnitude(test_list_of_strings)}')
+	print(f'TEST - Final Sum Magnitude = {final_sum_magnitude(test_homework_list_of_strings)}')
 	print('ASSERT - FSM = 4140')
 
-test_final_sum_magnitude()
+#test_final_sum_magnitude()

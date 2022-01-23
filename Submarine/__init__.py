@@ -1,3 +1,4 @@
+import imp
 from .binary_diags import get_binary_diagnostic
 from .binary_diags import get_oxy_co2_diagnostic
 from .instruction_parse import move_with_aim_and_depth
@@ -20,4 +21,5 @@ from .origami import count_fold_points
 from .origami import see_code
 from .route_mapping import find_route
 from .polymers import polymer_diff_max_min
+from .snailfish import final_sum_magnitude
 

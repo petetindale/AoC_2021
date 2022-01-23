@@ -3,7 +3,7 @@ import Submarine as sb
 from os import path
 
 
-CurrentDay = "Day 15"
+CurrentDay = "Day 18"
 
 
 if CurrentDay == "Day 1" or CurrentDay == "All" : 
@@ -134,4 +134,8 @@ if CurrentDay == "Day 14" or CurrentDay == "All" :
 if CurrentDay == "Day 15" or CurrentDay == "All" : 
 		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "route_day15.txt")
 		print(f"Cost of shortest path = {sb.find_route(list_of_strings, True)}")
+
+if CurrentDay == "Day 18" or CurrentDay == "All" : 
+		list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "snailfishsums_day18.txt")
+		print(f"Magnitude sum = {sb.final_sum_magnitude(list_of_strings)}")
 		
