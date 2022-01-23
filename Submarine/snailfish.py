@@ -10,6 +10,7 @@ test_list_of_strings = [
 	,"[[[9,[3,8]],[[0,9],6]],[[[3,7],[4,9]],3]]\n"
 	,"[[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]]\n"
 	,"[[[[[9,8],1],2],3],4]\n"
+	,"[[1,2],[[3,4],5]]\n"
 ]
 
 def matchedbrackets(brackets:str)->str:
@@ -43,13 +44,18 @@ class Pair:
 		elif self.left.isvalue() and self.right.isvalue() :
 			return False
 		return True
+	
+	def getmagnitude(self)->int:
+		if self.isvalue():
+			return self.value
+		return self.left.getmagnitude()*3 + self.right.getmagnitude()*2
 
 	def checkdepthrule(self,depth:int=1)->Tuple[bool,'Pair']:
 		if not self.isvalue():
 			if depth > 4:
 				if self.haschildren():
 					print('error')
-				print(f'explode {self} at {depth}')
+				#print(f'explode {self} at {depth}')
 				return (True,self)
 			depth += 1
 			leftfound, left = self.left.checkdepthrule(depth)
@@ -62,7 +68,9 @@ class Pair:
 		rules = True
 		while rules:
 			depth = self.applydepthrule()
-			value = self.applyvaluerule()
+			value = False
+			if not depth:
+				value = self.applyvaluerule()
 			rules = depth or value
 
 	def applyvaluerule(self)->bool:
@@ -190,18 +198,9 @@ class Pair:
 def final_sum_magnitude(list_of_strings:list)->int:
 	list_of_pairs = list(map(lambda x:Pair.pair_fromstr(x.strip()),list_of_strings))
 	for p in list_of_pairs:
-		print('================')
-		
-		print(p)
 		p.applyrules()
 		print(p)
-		
-		p = Pair.add_pair(p, Pair.pair_fromstr('[[[[2,1],1],2],3]'))
-		
-		print(p)
-		p.applyrules()
-		print(p)
-		
+		print(p.getmagnitude())
 		
 	return 0
 
