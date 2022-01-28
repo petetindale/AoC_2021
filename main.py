@@ -131,7 +131,7 @@ if CurrentDay == "Day 14" or CurrentDay == "All" :
     print(f"Difference max & min of polymer chars = {sb.polymer_diff_max_min(list_of_strings, 10)}")
 
     #sb.see_code(list_of_strings)
-		
+
 if CurrentDay == "Day 15" or CurrentDay == "All" : 
     list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "route_day15.txt")
     print(f"Cost of shortest path = {sb.find_route(list_of_strings, True)}")
