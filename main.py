@@ -4,7 +4,8 @@ import Submarine as sb
 from os import path
 
 
-CurrentDay = "Day 18"
+
+CurrentDay = "Day 19"
 
 
 if CurrentDay == "Day 1" or CurrentDay == "All" : 
@@ -140,4 +141,9 @@ if CurrentDay == "Day 18" or CurrentDay == "All" :
     list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "snailfishsums_day18.txt")
     #print(f"Magnitude sum = {sb.final_sum_magnitude(list_of_strings)}")
     print(f'Max magnitude = {sb.find_max_magnitude(list_of_strings)}')
+
+if CurrentDay == "Day 19" or CurrentDay == "All" : 
+    list_of_strings = file_importer.get_list_of_strings(path.dirname(__file__) + ("/Inputs/"), "beacon_scanner_day19.txt")
+
+    print(f'Count Beacons = {sb.count_beacons(list_of_strings)}')
 		

@@ -48,7 +48,7 @@ class Scanner:
         return distances
     
     @classmethod
-    def compare_distances(cls, d1:dict, d2:dict)->int:
+    def count_distances(cls, d1:dict, d2:dict)->int:
         count = 0
         for dist in d1.values():
             if dist in d2.values(): 
@@ -73,16 +73,20 @@ class ScannerList:
         scanner_str += '==================='
         return scanner_str
     
-    def compare_distances(self)->int:
-        count = 0
+    def compare_distances(self)->list:
+        aligned_scanners = list()
         for a in range(len(self.scanners)):
             for b in range(len(self.scanners)-a):
                 if a != b+a:
-                    cmp = Scanner.compare_distances(self.scanners[a].distances, self.scanners[b+a].distances)
-                    print(f'{a} {b+a} {len(self.scanners[a].distances)} & {cmp}')
-                    count += cmp
-        return count
+                    cmp = Scanner.count_distances(self.scanners[a].distances, self.scanners[b+a].distances)
+                    if cmp > 10:
+                        aligned_scanners.append((a,b+a))
+                    #print(f'{a} {b+a} {len(self.scanners[a].distances)} & {cmp}')
+        return aligned_scanners
     
+    def orientate_scanners(self)->int:
+        return 0
+
     @classmethod
     def scanners_from_list(cls, list_of_strings:list)->'ScannerList':
         scanners = list()
@@ -108,5 +112,6 @@ def count_beacons(list_of_strings:list)->int:
 def test_count_beacons():
     #print(f"simple beacons - {count_beacons(beacon_tests.test_simple_beacons)}")
     print(f"complex beacons - {count_beacons(beacon_tests.test_complex_beacons)}")
+    pass
 
 test_count_beacons()
